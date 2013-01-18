@@ -4,7 +4,9 @@ Quick example for demo purposes, not complete.
 
 ## To clone ##
 git clone https://github.com/mattbierner/parse-pn parse-pn
+
 cd parse-pn
+
 git submodule update --init --recursive
 
 
