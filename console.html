@@ -50,14 +50,16 @@
                 parse: 'dependencies/parse/lib',
                 stream: 'dependencies/parse/dependencies/stream/lib/stream',
                 
-                ecma: 'dependencies/parse-ecma/lib'
+                ecma: 'dependencies/parse-ecma/lib',
+                
+                'polish': 'lib/template'
             }
         });
         $(function(){
             require([
                 'parse/parse',
                 'stream',
-                'lib/polish'],
+                'polish'],
                 function(parse, stream, polish)
             {
                 $('button').click(function() {
