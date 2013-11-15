@@ -50,6 +50,7 @@ var expr = rec(\expr ->
                 expr |> (expected, 'expression'),
                 expr |> (expected, 'expression')),
             \op, a, b -> always(op(a, b))),
+        
         token <| number |> (expected, 'number')));
 
 var prog = between(beginSpace, eof,
