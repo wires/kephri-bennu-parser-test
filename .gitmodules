@@ -4,3 +4,9 @@
 [submodule "dependencies/parse-ecma"]
 	path = dependencies/parse-ecma
 	url = https://github.com/mattbierner/parse-ecma
+[submodule "dependencies/nu"]
+	path = dependencies/nu
+	url = https://github.com/mattbierner/nu
+[submodule "dependencies/seshat"]
+	path = dependencies/seshat
+	url = https://github.com/mattbierner/seshat

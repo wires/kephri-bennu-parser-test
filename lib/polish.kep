@@ -1,0 +1,60 @@
+/**
+ * @fileOverview A very simple polish notation evaluator using parse.js
+ * 
+ * Only supports whole numbers and basic operators.
+ */
+package(
+    evaluate)
+with
+    import 'parse/parse' {
+        always,
+        bind,
+        binds,
+        choice,
+        either,
+        eof,
+        enumeration,
+        expected,
+        many,
+        many1,
+        next,
+        rec,
+        run},
+    import 'parse/text' {character, digit, space},
+    import 'parse/lang' {between, then},
+    import 'nu/stream' {foldl}
+in {
+
+var join = (foldl, (+), '');
+
+var beginSpace = many(space);
+
+var token = \p -> then(p, many(space));
+
+var add = next(character('+'), always((+))),
+    sub = next(character('-'), always((-))),
+    mul = next(character('*'), always((*))),
+    div = next(character('/'), always((/)));
+
+var operator = choice(add, sub, mul, div);
+
+var number = bind(
+    many1(digit),
+    join \> parseInt \> always);
+
+var expr = rec(\expr ->
+    either(
+        binds(
+            enumeration(
+                token <| operator |> (expected, 'operator'),
+                expr |> (expected, 'expression'),
+                expr |> (expected, 'expression')),
+            \op, a, b -> always(op(a, b))),
+        token <| number |> (expected, 'number')));
+
+var prog = between(beginSpace, eof,
+    expr);
+
+evaluate = (run, prog);
+
+}

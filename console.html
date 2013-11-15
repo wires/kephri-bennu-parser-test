@@ -25,6 +25,10 @@
             left: 0;
             bottom: 0;
         }
+        
+        .Error {
+            color: red;
+        }
     </style>
 </head>
 
@@ -37,8 +41,8 @@
         </div>
         <div class='output'>
             <h2>Output</h2>
-            <pre class='LexOut'></pre>
-            <pre class='ParseOut'></pre>
+            <pre class='Out'></pre>
+            <pre class='Error'></pre>
         </div>
     </div>
     
@@ -47,26 +51,32 @@
     <script type="application/javascript">
         requirejs.config({
             paths: {
-                parse: 'dependencies/parse/lib',
-                stream: 'dependencies/parse/dependencies/stream/lib/stream',
+                'parse': 'dependencies/parse/lib',
+                'nu': 'dependencies/nu/lib',
+                'seshat': 'dependencies/seshat/lib/seshat',
                 
-                ecma: 'dependencies/parse-ecma/lib',
-                
-                'polish': 'lib/template'
+                'polish': 'dist/polish'
             }
         });
         $(function(){
             require([
                 'parse/parse',
-                'stream',
                 'polish'],
-                function(parse, stream, polish)
+            function(parse,
+                    polish)
             {
                 $('button').click(function() {
-                    var lexOut = $('.LexOut'); 
-                
+                    var out = $('.Out'),
+                        error = $('.Error');
+                    
                     var input = $('textarea').val();
-                    lexOut.text(polish.eval(input));
+                    error.text('');
+                    out.text('');
+                    try {
+                        out.text(polish.evaluate(input));
+                    } catch (e) {
+                        error.text(e);
+                    }
                     
                 });
             });
