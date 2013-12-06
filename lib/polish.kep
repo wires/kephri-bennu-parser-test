@@ -4,6 +4,7 @@
  * Only supports whole numbers and basic operators.
  */
 package(
+    prog,
     evaluate)
 with
     import 'parse/parse' {
@@ -53,7 +54,7 @@ var expr = rec(\expr ->
         
         token <| number |> (expected, 'number')));
 
-var prog = between(beginSpace, eof,
+prog = between(beginSpace, eof,
     expr);
 
 evaluate = (run, prog);

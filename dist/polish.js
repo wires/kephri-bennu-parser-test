@@ -2,9 +2,10 @@
  * THIS FILE IS AUTO GENERATED from 'lib/polish.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "parse/parse", "parse/text", "parse/lang", "nu/stream"], (function(require, exports, __o, __o0, __o1, __o2) {
+define(["require", "exports", "parse/parse", "parse/text", "parse/lang", "nu/stream"], (function(require, exports, __o,
+    __o0, __o1, __o2) {
     "use strict";
-    var evaluate;
+    var prog, evaluate;
     var __o = __o,
         always = __o["always"],
         bind = __o["bind"],
@@ -58,11 +59,14 @@ define(["require", "exports", "parse/parse", "parse/text", "parse/lang", "nu/str
         });
     })(parseInt, join)));
     var expr = rec((function(expr) {
-        return either(binds(enumeration(expected.bind(null, "operator")(token(operator)), expected.bind(null, "expression")(expr), expected.bind(null, "expression")(expr)), (function(op, a, b) {
+        return either(binds(enumeration(expected.bind(null, "operator")(token(operator)), expected.bind(
+            null, "expression")(expr), expected.bind(null, "expression")(expr)), (function(op,
+            a, b) {
             return always(op(a, b));
         })), expected.bind(null, "number")(token(number)));
     }));
-    var prog = between(beginSpace, eof, expr);
+    (prog = between(beginSpace, eof, expr));
     (evaluate = run.bind(null, prog));
+    (exports.prog = prog);
     (exports.evaluate = evaluate);
 }))
