@@ -71,7 +71,6 @@ var colon = token <| character <| ':';
 var equals = token <| character <| '=';
 
 var header = enumeration(tag, colon, tag);
-
 var body = enumeration(tag, equals, expr);
 
 
@@ -80,7 +79,7 @@ var s = many1(choice(
     attempt(body)
 ));
 
-prog = between(beginSpace, eof, header);
+prog = between(beginSpace, eof, s);
 
 evaluate = run @ prog;
 
