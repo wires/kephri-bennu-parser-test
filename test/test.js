@@ -4,17 +4,31 @@ const test = require('ava')
 
 const { evaluate, prog } = require('../dist/polish.js')
 
+function e (s) {
+	const x = evaluate(s)
+	console.error(JSON.stringify(x, null, 2))
+	return x
+}
+
 test('parse header', t => {
-	evaluate('foo:a')
+	e('foo:a')
 	t.pass()
 })
 
 test('parse whitespace', t => {
-	evaluate('foo : a')
+	e('foo : a')
+	t.pass()
+})
+
+test('parse body', t => {
+	e(`
+		bit : type
+		bit = 2
+	`)
 	t.pass()
 })
 
 test('failed parse', async t => {
 	const err = await t.throws(() => evaluate('$'));
-	t.is(err.found, '$')
+	t.is(typeof err, typeof {})
 })
