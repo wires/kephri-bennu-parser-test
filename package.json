@@ -1,0 +1,29 @@
+{
+  "name": "parse-pn",
+  "version": "1.0.0",
+  "description": "A very simple example polish notation calculator using parse.js Only supports whole numbers and 4 basic operators.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run build && node_modules/.bin/ava",
+    "build": "node_modules/.bin/khepri --package_manager node -o dist/polish.js lib/polish.kep"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattbierner/parse-pn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mattbierner/parse-pn/issues"
+  },
+  "homepage": "https://github.com/mattbierner/parse-pn#readme",
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "khepri": "^1.3.0"
+  },
+  "dependencies": {
+    "bennu": "github:mattbierner/bennu",
+    "nu-stream": "github:mattbierner/nu"
+  }
+}

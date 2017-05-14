@@ -43,8 +43,8 @@
         </div>
         <div class='output'>
             <h2>Output</h2>
-            <pre class='Out'></pre>
-            <pre class='Error'></pre>
+            <pre class='Out' wrap></pre>
+            <pre class='Error' wrap></pre>
         </div>
     </div>
     
@@ -101,7 +101,7 @@
                 null, 
                 function(x) {
                     error.text('');
-                    out.text(x);
+                    out.text(JSON.stringify(x,null,2));
                 },
                 function(x) {
                     error.text(x);

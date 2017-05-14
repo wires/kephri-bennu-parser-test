@@ -1,16 +1,5 @@
-# Project Files #
-#################
-.project
-
-# OS Files #
-############
+node_modules/
 .DS_Store*
-ehthumbs.db
-Icon?
-Thumbs.db
-
-# Temp Files #
-##############
 *~
 *.tmp*
 *.orig

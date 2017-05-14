@@ -1,72 +1,80 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/polish.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/polish.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "parse/parse", "parse/text", "parse/lang", "nu/stream"], (function(require, exports, __o,
-    __o0, __o1, __o2) {
-    "use strict";
-    var prog, evaluate;
-    var __o = __o,
-        always = __o["always"],
-        bind = __o["bind"],
-        binds = __o["binds"],
-        choice = __o["choice"],
-        either = __o["either"],
-        eof = __o["eof"],
-        enumeration = __o["enumeration"],
-        expected = __o["expected"],
-        many = __o["many"],
-        many1 = __o["many1"],
-        next = __o["next"],
-        rec = __o["rec"],
-        run = __o["run"],
-        __o0 = __o0,
-        character = __o0["character"],
-        digit = __o0["digit"],
-        space = __o0["space"],
-        __o1 = __o1,
-        between = __o1["between"],
-        then = __o1["then"],
-        __o2 = __o2,
-        foldl = __o2["foldl"];
-    var join = foldl.bind(null, (function(x, y) {
+"use strict";
+var __o = require("bennu")["parse"],
+    __o0 = require("bennu")["text"],
+    __o1 = require("bennu")["lang"],
+    __o2 = require("nu-stream")["stream"],
+    prog, evaluate, always = __o["always"],
+    bind = __o["bind"],
+    binds = __o["binds"],
+    choice = __o["choice"],
+    attempt = __o["attempt"],
+    either = __o["either"],
+    eof = __o["eof"],
+    enumeration = __o["enumeration"],
+    expected = __o["expected"],
+    many = __o["many"],
+    many1 = __o["many1"],
+    next = __o["next"],
+    rec = __o["rec"],
+    run = __o["run"],
+    character = __o0["character"],
+    digit = __o0["digit"],
+    letter = __o0["letter"],
+    space = __o0["space"],
+    between = __o1["between"],
+    then = __o1["then"],
+    foldl = __o2["foldl"],
+    x, x0, x1, p, p0, p1, __add = (function(x, y) {
         return (x + y);
-    }), "");
-    var beginSpace = many(space);
-    var token = (function(p) {
+    }),
+    join = foldl.bind(null, __add, ""),
+    beginSpace = many(space),
+    token = (function(p) {
         return then(p, many(space));
-    });
-    var add = next(character("+"), always((function(x, y) {
-        return (x + y);
+    }),
+    plus = character("+"),
+    times = character("*"),
+    op = (function(x) {
+        return always(({
+            "operator": x
+        }));
+    }),
+    add = next(plus, always(({
+        "operator": "coproduct"
     }))),
-        sub = next(character("-"), always((function(x, y) {
-            return (x - y);
-        }))),
-        mul = next(character("*"), always((function(x, y) {
-            return (x * y);
-        }))),
-        div = next(character("/"), always((function(x, y) {
-            return (x / y);
-        })));
-    var operator = choice(add, sub, mul, div);
-    var number = bind(many1(digit), (function(f, g) {
-        return (function(x) {
-            return f(g(x));
-        });
-    })(always, (function(f, g) {
-        return (function(x) {
-            return f(g(x));
-        });
-    })(parseInt, join)));
-    var expr = rec((function(expr) {
-        return either(binds(enumeration(expected.bind(null, "operator")(token(operator)), expected.bind(
-            null, "expression")(expr), expected.bind(null, "expression")(expr)), (function(op,
-            a, b) {
-            return always(op(a, b));
-        })), expected.bind(null, "number")(token(number)));
-    }));
-    (prog = between(beginSpace, eof, expr));
-    (evaluate = run.bind(null, prog));
-    (exports.prog = prog);
-    (exports.evaluate = evaluate);
-}))
+    mul = next(times, always(({
+        "operator": "product"
+    }))),
+    operator = choice(add, mul),
+    number = bind(many1(digit), ((x = join), (x0 = parseInt), (function(z) {
+        var z0 = x(z);
+        return always(x0(z0));
+    }))),
+    label = bind(many1(letter), ((x1 = join), (function(z) {
+        var z0 = x1(z);
+        return always(z0);
+    }))),
+    expr = rec((function(expr0) {
+        return either(binds(enumeration(expected("operator", token(operator)), expected("expression", expr0),
+            expected("expression", expr0)), (function(op0, a, b) {
+            return always(({
+                "operator": op0,
+                "x": a,
+                "y": b
+            }));
+        })), expected("number", token(number)));
+    })),
+    tag = ((p = label), then(p, many(space))),
+    colon = ((p0 = character(":")), then(p0, many(space))),
+    equals = ((p1 = character("=")), then(p1, many(space))),
+    header = enumeration(tag, colon, tag),
+    body = enumeration(tag, equals, expr),
+    s = many1(choice(attempt(header), attempt(body)));
+(prog = between(beginSpace, eof, header));
+(evaluate = run.bind(null, prog));
+(exports["prog"] = prog);
+(exports["evaluate"] = evaluate);
