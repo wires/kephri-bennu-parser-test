@@ -70,16 +70,25 @@ var tag = token <| label;
 var colon = token <| character <| ':';
 var equals = token <| character <| '=';
 
-var header = enumeration(tag, colon, tag);
-var body = enumeration(tag, equals, expr);
+var header = binds(
+    enumeration(tag, colon, tag),
+    \name, _, t -> always({header: {name: name, type: t}})
+);
 
+var body = binds(
+    enumeration(tag, equals, expr),
+    \name, _, e -> always({body: {name: name, expr: e}})
+);
 
-var s = many1(choice(
-    attempt(header),
-    attempt(body)
-));
+var typedef = binds(
+    enumeration(header, body),
+    \h, b -> always({
+        header: h,
+        body: b
+    })
+);
 
-prog = between(beginSpace, eof, s);
+prog = between(beginSpace, eof, typedef);
 
 evaluate = run @ prog;
 

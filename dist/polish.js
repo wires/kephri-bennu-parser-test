@@ -71,10 +71,29 @@ var __o = require("bennu")["parse"],
     tag = ((p = label), then(p, many(space))),
     colon = ((p0 = character(":")), then(p0, many(space))),
     equals = ((p1 = character("=")), then(p1, many(space))),
-    header = enumeration(tag, colon, tag),
-    body = enumeration(tag, equals, expr),
-    s = many1(choice(attempt(header), attempt(body)));
-(prog = between(beginSpace, eof, s));
+    header = binds(enumeration(tag, colon, tag), (function(name, _, t) {
+        return always(({
+            header: ({
+                name: name,
+                type: t
+            })
+        }));
+    })),
+    body = binds(enumeration(tag, equals, expr), (function(name, _, e) {
+        return always(({
+            body: ({
+                name: name,
+                expr: e
+            })
+        }));
+    })),
+    typedef = binds(enumeration(header, body), (function(h, b) {
+        return always(({
+            header: h,
+            body: b
+        }));
+    }));
+(prog = between(beginSpace, eof, typedef));
 (evaluate = run.bind(null, prog));
 (exports["prog"] = prog);
 (exports["evaluate"] = evaluate);
